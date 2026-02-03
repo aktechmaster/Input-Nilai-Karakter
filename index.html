@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Bina Pribadi - Guru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans">
+
+    <div class="bg-emerald-600 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="max-w-md mx-auto flex items-center gap-3">
+            <i class="fa-solid fa-chalkboard-user text-2xl"></i>
+            <div>
+                <h1 class="font-bold text-lg leading-tight">Input Jurnal Guru</h1>
+                <p class="text-xs text-emerald-100">Bina Pribadi Siswa</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-md mx-auto p-5 pb-20">
+        
+        <form id="formInput" class="space-y-4">
+            
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-700 mb-3 border-b pb-2"><i class="fa-solid fa-user-graduate mr-2 text-emerald-500"></i>Pilih Siswa</h3>
+                
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Periode Laporan</label>
+                        <select name="periode" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="Februari 2025">Februari 2025</option>
+                            <option value="Maret 2025">Maret 2025</option>
+                            <option value="April 2025">April 2025</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Nama Siswa / NISN</label>
+                        <input type="text" id="nama" name="nama" placeholder="Ketik Nama Siswa..." required 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">NISN (Wajib & Unik)</label>
+                        <input type="number" id="nisn" name="nisn" placeholder="Contoh: 012345678" required 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <p class="text-[10px] text-slate-400 mt-1">*Pastikan NISN sesuai data Dapodik</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-700 mb-3 border-b pb-2"><i class="fa-solid fa-star mr-2 text-yellow-500"></i>Penilaian Karakter</h3>
+                
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-xs font-bold text-slate-600">Kedisiplinan</label>
+                            <span id="lbl-disiplin" class="text-xs font-bold text-emerald-600">4 - Sangat Baik</span>
+                        </div>
+                        <input type="range" name="disiplin" min="1" max="4" value="4" step="1" 
+                            class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                            oninput="updateLabel(this, 'lbl-disiplin')">
+                        <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                            <span>Kurang</span><span>Cukup</span><span>Baik</span><span>Sangat Baik</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-xs font-bold text-slate-600">Ibadah</label>
+                            <span id="lbl-ibadah" class="text-xs font-bold text-emerald-600">4 - Sangat Baik</span>
+                        </div>
+                        <input type="range" name="ibadah" min="1" max="4" value="4" step="1" 
+                            class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                            oninput="updateLabel(this, 'lbl-ibadah')">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-xs font-bold text-slate-600">Sosial & Adab</label>
+                            <span id="lbl-sosial" class="text-xs font-bold text-emerald-600">4 - Sangat Baik</span>
+                        </div>
+                        <input type="range" name="sosial" min="1" max="4" value="4" step="1" 
+                            class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                            oninput="updateLabel(this, 'lbl-sosial')">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-700 mb-3 border-b pb-2"><i class="fa-solid fa-pen mr-2 text-blue-500"></i>Catatan Wali Kelas</h3>
+                <textarea name="catatan" rows="3" placeholder="Tulis catatan perkembangan ananda di sini..." required
+                    class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+            </div>
+
+            <button type="submit" id="btnSubmit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-200 transition active:scale-95 flex justify-center items-center gap-2">
+                <i class="fa-solid fa-paper-plane"></i> Kirim Laporan
+            </button>
+
+        </form>
+    </main>
+
+    <script>
+        // --- KONFIGURASI ---
+        // GANTI URL INI DENGAN URL WEB APP HASIL DEPLOY TERBARU ANDA
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxB_CONTOH_KODE_PANJANG_GANTI_INI/exec'; 
+
+        // Fungsi Update Label Slider
+        function updateLabel(el, targetId) {
+            const val = el.value;
+            let text = "";
+            if(val == 1) text = "1 - Kurang";
+            if(val == 2) text = "2 - Cukup";
+            if(val == 3) text = "3 - Baik";
+            if(val == 4) text = "4 - Sangat Baik";
+            document.getElementById(targetId).innerText = text;
+        }
+
+        // Handle Submit
+        const form = document.getElementById('formInput');
+        const btn = document.getElementById('btnSubmit');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // Efek Loading
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Menyimpan...';
+
+            // Ambil Data Form
+            let formData = new FormData(form);
+            let data = {};
+            formData.forEach((value, key) => data[key] = value);
+
+            // Kirim ke Google Script
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if(result.result === 'success') {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: 'Data Bina Pribadi tersimpan.',
+                        icon: 'success',
+                        confirmButtonColor: '#059669'
+                    });
+                    form.reset(); // Kosongkan form
+                    // Reset slider visual
+                    updateLabel({value:4}, 'lbl-disiplin');
+                    updateLabel({value:4}, 'lbl-ibadah');
+                    updateLabel({value:4}, 'lbl-sosial');
+                } else {
+                    throw new Error(result.error);
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: 'Gagal',
+                    text: 'Terjadi kesalahan: ' + error.message,
+                    icon: 'error'
+                });
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Laporan';
+            });
+        });
+    </script>
+</body>
+</html>
