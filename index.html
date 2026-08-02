@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById(`disiplin_${i}`).value = "3";
                 document.getElementById(`ibadah_${i}`).value = "3";
                 document.getElementById(`sosial_${i}`).value = "3";
-                document.getElementById(`catatan_${i}`).value = "Baik, pertahankan.";
+                document.getElementById(`catatan_${i}`).value = "Sudah Baik, pertahankan.";
             });
             Swal.fire('Reset', 'Semua nilai di-set ke default (3)', 'info');
         }
@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     disiplin: disiplin,
                     ibadah: ibadah,
                     sosial: sosial,
-                    catatan: catatan || "-" // Jika kosong, isi strip
+                    catatan: catatan || "Insya Allah sudah baik" // Jika kosong, isi Insya Allah Sudah Baik
                 });
             });
 
