@@ -107,37 +107,47 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxCE2mexwL_a5OZ9upm1WRSitrOI1FfmqbYGNT5Wjx3wcruDLRvtLPAB7CTfAYkvxJB/exec'; 
 
         // Saat halaman dimuat, ambil daftar kelas
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch(SCRIPT_URL + '?action=getListKelas')
-                .then(r => r.json())
-                .then(kelasArr => {
-                    let html = '<option value="">-- Pilih Kelas --</option>';
-                    kelasArr.forEach(k => html += `<option value="${k}">${k}</option>`);
-                    document.getElementById('pilihKelas').innerHTML = html;
-                });
+document.addEventListener('DOMContentLoaded', () => {
+    fetch(SCRIPT_URL + '?action=getListKelas')
+        .then(r => r.json())
+        .then(kelasArr => {
+            let html = '<option value="">-- Pilih Kelas --</option>';
+            kelasArr.forEach(k => html += `<option value="${k}">${k}</option>`);
+            document.getElementById('pilihKelas').innerHTML = html;
+        })
+        .catch(err => {
+            // ✅ Bagian baru ditambahkan di sini
+            document.getElementById('pilihKelas').innerHTML = '<option value="">-- Gagal memuat --</option>';
+            Swal.fire('Gagal Memuat Daftar Kelas', 'Periksa izin akses atau koneksi: ' + err.message, 'error');
         });
+});
 
         let dataSiswaCurrent = [];
 
         // Fungsi Load Siswa
         function loadSiswa() {
-            const kelas = document.getElementById('pilihKelas').value;
-            if(!kelas) return Swal.fire('Pilih Kelas dulu!');
+    const kelas = document.getElementById('pilihKelas').value;
+    if(!kelas) return Swal.fire('Pilih Kelas dulu!');
 
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('areaInput').classList.add('hidden');
+    document.getElementById('loading').classList.remove('hidden');
+    document.getElementById('areaInput').classList.add('hidden');
 
-            fetch(SCRIPT_URL + '?action=getSiswa&kelas=' + encodeURIComponent(kelas))
-                .then(r => r.json())
-                .then(data => {
-                    dataSiswaCurrent = data;
-                    renderTabel(data);
-                    document.getElementById('loading').classList.add('hidden');
-                    document.getElementById('areaInput').classList.remove('hidden');
-                    document.getElementById('btnSaveTop').classList.remove('hidden');
-                    document.getElementById('totalSiswaInfo').innerText = data.length + " Siswa di kelas " + kelas;
-                });
-        }
+    fetch(SCRIPT_URL + '?action=getSiswa&kelas=' + encodeURIComponent(kelas))
+        .then(r => r.json())
+        .then(data => {
+            dataSiswaCurrent = data;
+            renderTabel(data);
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('areaInput').classList.remove('hidden');
+            document.getElementById('btnSaveTop').classList.remove('hidden');
+            document.getElementById('totalSiswaInfo').innerText = data.length + " Siswa di kelas " + kelas;
+        })
+        .catch(err => {
+            // ✅ Tambahkan blok ini
+            document.getElementById('loading').classList.add('hidden');
+            Swal.fire('Gagal Mengambil Data', 'Periksa koneksi atau izin akses: ' + err.message, 'error');
+        });
+}
 
         // Render Tabel
         function renderTabel(data) {
